@@ -10,13 +10,16 @@
 public class Caravan {
 
     //TODO: declare variables.
+    private CamelNode tail;
+    private CamelNode head;
+    private int size;
 
     /**
      * Initializes this caravan as an empty list.
      */
     public Caravan() {
-
-        //TODO: define constructor
+        head = tail = null;
+        size = 0;
     }
 
     /**
@@ -24,7 +27,14 @@ public class Caravan {
      * @param camel the camel to be added to the end of this caravan, camel != null.
      */
     public void addLast(Camel camel) {
-        // TODO: implement method.
+        size++;
+        CamelNode node = new CamelNode(null, camel);
+        if(head == null) {
+            tail = head = node;
+            return;
+        }
+        tail.setNext(node);
+        tail = tail.getNext();
     }
 
     /**
@@ -36,8 +46,29 @@ public class Caravan {
      * @param camel the camel to be inserted into the caravan, camel != null.
      */
     public void insertBefore(int searchStrength, Camel camel) {
+        if(head == null || tail == null) {
+            head = tail = new CamelNode(null, camel);
+            size++;
+            return;
+        }
 
-        // TODO: implement method.
+        CamelNode pointer = head;
+        boolean found = false;
+
+        for (int i = 0; i < size-1; i++) {
+            if(pointer.getNext().getCamel().getStrength() == searchStrength) {
+                found = true;
+                break;
+            }
+            pointer = pointer.getNext();
+        }
+        if(found){
+            CamelNode old = pointer.getNext();
+            pointer.setNext(new CamelNode(old, camel));
+        } else {
+            head = new CamelNode(head, camel);
+        }
+        size++;
     }
 
     /**
@@ -52,8 +83,18 @@ public class Caravan {
      */
     public Caravan detachFront(int number) {
 
-        // TODO: implement method
-        return null;
+        if(number == 0 || size == 0) return new Caravan();
+
+        Caravan caravan = new Caravan();
+
+        for (int i = 0; i < number; i++) {
+            Camel camel = head.getCamel();
+            caravan.addLast(camel);
+            size--;
+            head = head.getNext();
+        }
+
+        return caravan;
     }
 
     /**
@@ -61,9 +102,7 @@ public class Caravan {
      * @return the number of camels in the caravan.
      */
     public int size() {
-
-        //TODO: implement method.
-        return 0;
+        return size;
     }
 
     /**
@@ -77,8 +116,27 @@ public class Caravan {
      */
     public String toString() {
 
-        // TODO: implement method.
-        return "";
+        if(size == 0) return "[]";
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        CamelNode pointer = head;
+        int pace = Integer.MAX_VALUE;
+        for (int i = 0; i < size && pointer!=null; i++) {
+            int strength = pointer.getCamel().getStrength();
+            int load = pointer.getCamel().getLoad();
+            int pace_local = strength-load;
+            if(pace > pace_local) pace = pace_local;
+            sb.append(pointer.getCamel().toString());
+            if(i!=size-1){
+                sb.append(", ");
+            }
+            pointer = pointer.getNext();
+
+        }
+        sb.append("] pace = ").append(pace);
+
+        return sb.toString();
     }
 }
 

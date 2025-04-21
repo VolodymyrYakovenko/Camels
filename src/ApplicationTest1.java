@@ -27,7 +27,7 @@ public class ApplicationTest1 {
         testValue(l1.size(), 5);
 
         System.out.println("Test 'insertBefore' and 'size' method:");
-        l1.insertBefore(12, c3);
+         l1.insertBefore(12, c3);
         testValue(l1.size(), 6);
 
         System.out.println("Test 'toString' method:");
