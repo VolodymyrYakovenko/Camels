@@ -11,9 +11,9 @@ public class CamelNode {
         this.next = next;
     }
 
-    public void setCamel(Camel camel) {
-        this.camel = camel;
-    }
+//    public void setCamel(Camel camel) {
+//        this.camel = camel;
+//    }
 
     public CamelNode getNext() {
         return next;
